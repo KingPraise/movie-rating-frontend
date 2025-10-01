@@ -13,9 +13,9 @@ User = get_user_model()
 
 class MoviesAPITest(APITestCase):
     def setUp(self):
-        self.register_url = "/api/auth/register"
-        self.login_url = "/api/auth/login"
-        self.movies_url = "/api/movies"
+        self.register_url = "/api/auth/register/"
+        self.login_url = "/api/auth/login/"
+        self.movies_url = "/api/movies/"
         # create user
         self.user = User.objects.create_user(username="alice", email="alice@example.com", password="pass12345")
 
@@ -69,7 +69,7 @@ class MoviesAPITest(APITestCase):
         movie_id = create_resp.data["id"]
 
         # rate movie (create)
-        rate_url = f"/api/movies/{movie_id}/ratings"
+        rate_url = f"/api/movies/{movie_id}/ratings/"
         rate_resp = self.client.post(rate_url, {"rating": 5, "review": "Classic!"}, format="json", **auth_header)
         self.assertEqual(rate_resp.status_code, status.HTTP_201_CREATED)
         self.assertIn("rating", rate_resp.data)

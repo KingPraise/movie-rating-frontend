@@ -7,7 +7,7 @@ async function main() {
   try {
     // 1. Register a user
     console.log("=== Register ===");
-    let response = await fetch(`${API_BASE}/auth/register/`, {
+    let response = await fetch(`${API_BASE}/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -21,7 +21,7 @@ async function main() {
 
     // 2. Login
     console.log("\n=== Login ===");
-    response = await fetch(`${API_BASE}/auth/login/`, {
+    response = await fetch(`${API_BASE}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -69,7 +69,7 @@ async function main() {
 
     // 6. Rate a movie (protected)
     console.log("\n=== Rate Movie ===");
-    response = await fetch(`${API_BASE}/movies/${movieId}/ratings/`, {
+    response = await fetch(`${API_BASE}/movies/${movieId}/ratings`, {
       method: "POST",
       headers: authHeaders,
       body: JSON.stringify({
@@ -82,20 +82,20 @@ async function main() {
 
     // 7. List ratings for a movie
     console.log("\n=== List Movie Ratings ===");
-    response = await fetch(`${API_BASE}/movies/${movieId}/ratings/`);
+    response = await fetch(`${API_BASE}/movies/${movieId}/ratings`);
     let ratingsList = await response.json();
     console.log("Movie Ratings:", response.status, ratingsList);
 
     // 8. List ratings by user
     console.log("\n=== List User Ratings ===");
     const userId = registerData.id;
-    response = await fetch(`${API_BASE}/users/${userId}/ratings/`);
+    response = await fetch(`${API_BASE}/users/${userId}/ratings`);
     let userRatings = await response.json();
     console.log("User Ratings:", response.status, userRatings);
 
     // 9. Delete movie (protected)
     // console.log("\n=== Delete Movie ===");
-    // response = await fetch(`${API_BASE}/movies/${movieId}/`, {
+    // response = await fetch(`${API_BASE}/movies/${movieId}`, {
     //   method: "DELETE",
     //   headers: authHeaders,
     // });
