@@ -53,9 +53,9 @@ export default function Movies() {
 
             const data = await fetchMovies(filters);
 
-            setMovies(data.items || data || []);
+            setMovies(data.items || []);
             setTotal(data.total || 0);
-            setTotalPages(data.pages || 1);
+            setTotalPages(Math.ceil((data.total || 0) / (data.limit || 12)));
         } catch (err) {
             console.error("Movies fetch error:", err);
             setError("Failed to load movies");
@@ -63,6 +63,7 @@ export default function Movies() {
             setLoading(false);
         }
     }
+
 
     function handleApplyFilters(e: React.FormEvent) {
         e.preventDefault();
@@ -269,8 +270,8 @@ export default function Movies() {
                                             key={page}
                                             onClick={() => goToPage(page)}
                                             className={`px-4 py-2 border rounded ${currentPage === page
-                                                    ? "bg-indigo-600 text-white"
-                                                    : "hover:bg-gray-100"
+                                                ? "bg-indigo-600 text-white"
+                                                : "hover:bg-gray-100"
                                                 }`}
                                         >
                                             {page}

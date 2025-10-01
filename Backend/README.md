@@ -79,10 +79,7 @@ GET /api/movies/{id}/ratings/
 DELETE /api/movies/{id}/
 
 🧪 Running Tests
-pytest
-
-
-(or python manage.py test)
+python manage.py test
 
 📂 Database Schema
 
@@ -91,3 +88,14 @@ User → default Django user
 Movie → title, description, genre, year, ratings_avg, ratings_count
 
 Rating → movie (FK), user (FK), stars (1–5), review, created_at
+
+# 🐳 Running with Docker (optional)
+
+# Build & run backend with Postgres
+docker-compose up --build
+
+# Run migrations
+docker-compose exec web python manage.py migrate
+
+# Create a superuser
+docker-compose exec web python manage.py createsuperuser
