@@ -1,16 +1,33 @@
+// src/api/axios.ts
+
 import axios from "axios";
 
 const API = axios.create({
-    baseURL: "https://05fc0a08fb42.ngrok-free.app/api", // backend URL
+    baseURL: "http://127.0.0.1:8000/api",
 });
 
-// Automatically attach JWT token 
-API.interceptors.request.use((config) => {
-    const token = localStorage.getItem("token"); // store JWT in localStorage
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+// This is the interceptor
+API.interceptors.request.use(
+    (config) => {
+        // 1. Get the auth tokens from localStorage
+        const authTokens = localStorage.getItem('authTokens');
+
+        if (authTokens) {
+            // 2. Parse the tokens and get the access token
+            const tokens = JSON.parse(authTokens);
+            const accessToken = tokens.access;
+
+            // 3. Set the Authorization header for the request
+            config.headers.Authorization = `Bearer ${accessToken}`;
+        }
+
+        // 4. Return the modified config so the request can proceed
+        return config;
+    },
+    (error) => {
+        // Handle request errors here
+        return Promise.reject(error);
     }
-    return config;
-});
+);
 
 export default API;
