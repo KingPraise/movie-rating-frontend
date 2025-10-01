@@ -84,7 +84,6 @@ class LoginView(APIView):
             status=status.HTTP_200_OK
         )
 
-@extend_schema(auth=[{"BearerAuth": []}])
 @extend_schema_view(
     get=extend_schema(
         summary="List Movies",
@@ -180,7 +179,12 @@ class MovieListCreateView(generics.ListCreateAPIView):
 class MovieDetailView(generics.RetrieveDestroyAPIView):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [permissions.AllowAny()]
+        return [permissions.IsAuthenticated()]
 
     def perform_destroy(self, instance):
         if getattr(instance, "created_by", None) != self.request.user:
