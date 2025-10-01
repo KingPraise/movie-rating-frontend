@@ -1,137 +1,67 @@
 # 🎬 Movie Ratings App
 
-A full-stack movie rating application with **Django REST Framework (DRF)** backend and **React + Vite + Tailwind** frontend.  
-Users can register/login, browse movies, filter/search, add movies, rate movies, and view ratings with pagination.
+A full-stack movie rating application built with Django REST Framework (backend) and React + Vite (frontend).
 
 ---
 
-## 🚀 Tech Stack
-- **Backend:** Python 3, Django, Django REST Framework, SimpleJWT
-- **Frontend:** React, Vite, TypeScript, TailwindCSS, React Router
-- **Auth:** JWT (access + refresh tokens)
-- **Database:** SQLite (for development)
+## 🚀 Setup & Run Instructions
+
+### Backend
+See [backend/README.md](backend/README.md)
+
+### Frontend
+See [frontend/README.md](frontend/README.md)
 
 ---
 
-## ⚙️ Setup Instructions
+## 🔑 Sample Credentials
+You can log in with:
 
-### 1. Backend (Django)
-```bash
-cd backend
-python -m venv venv
-source venv/bin/activate   # (on Windows: venv\Scripts\activate)
-pip install -r requirements.txt
+- Email: `testuser@test.com`  
+- Password: `password123`
 
+Or register a new account at `/register`.
 
-Run migrations and start server:
+---
 
-python manage.py migrate
-python manage.py runserver
+## 🏗️ Design Decisions
 
+1. **Auth with JWT (SimpleJWT)**  
+   - Access + refresh tokens.  
+   - Tokens stored in `localStorage`.  
+   - Axios interceptor auto-attaches Authorization header.
 
-Backend will run on http://127.0.0.1:8000.
+2. **Database schema**  
+   - `User` (auth)  
+   - `Movie` (title, description, genre, year, ratings_avg, ratings_count)  
+   - `Rating` (movie_id, user_id, stars 1–5, review, created_at)  
+   - `ratings_avg` + `ratings_count` stored on `Movie` for faster queries.
 
-2. Frontend (React + Vite)
-cd frontend
-npm install
+3. **Libraries & why**  
+   - **DRF** → rapid API development with JWT.  
+   - **React + Vite + Tailwind** → fast builds, modern UI.  
+   - **React Router** → routing.  
+   - **React Testing Library** → frontend testing.  
 
+4. **Scalability considerations**  
+   - Backend filters + pagination (`?genre=`, `?min_year=`, `?search=`, `?page=`, `?limit=`).  
+   - DB easily scalable to PostgreSQL.  
+   - JWT allows stateless scaling across servers.  
+   - Decoupled backend/frontend → independent deploys.  
 
-Create .env file in frontend with API base URL:
+---
 
-VITE_API_BASE_URL=http://127.0.0.1:8000/api
+## ✅ Completed Features
+- Register/Login (JWT)
+- Add/List/Delete movies
+- Rate movies (stars + review)
+- Movie details with ratings
+- Search + filters (genre, year, text)
+- Pagination
 
+---
 
-Run dev server:
+## 🧪 Running Tests
 
-npm run dev
-
-
-Frontend runs on http://localhost:5173.
-
-🔑 Authentication
-
-Register: POST /api/auth/register/
-
-Login: POST /api/auth/login/ → returns JWT tokens
-
-Token is stored in localStorage and attached to all authenticated requests.
-
-📡 API Endpoints (Core)
-
-POST /api/auth/register/ – user signup
-
-POST /api/auth/login/ – obtain JWT token
-
-GET /api/movies/ – list movies (supports ?search=, ?genre=, ?min_year=, ?max_year=, ?page=, ?limit=)
-
-POST /api/movies/ – add movie (auth required)
-
-GET /api/movies/{id}/ – movie details
-
-DELETE /api/movies/{id}/ – delete movie (auth required)
-
-POST /api/movies/{id}/ratings/ – add rating (auth required)
-
-GET /api/movies/{id}/ratings/ – list ratings
-
-GET /api/users/{id}/ratings/ – list all ratings by a user
-
-🏗️ Design Decisions
-
-JWT in localStorage
-
-Chosen for simplicity. Secure enough for this context.
-
-Axios interceptor attaches token automatically.
-
-Denormalized ratings
-
-Each Movie has ratings_avg and ratings_count.
-
-Keeps movie list performant without extra queries.
-
-Pagination & filters
-
-Backend accepts query params for pagination & filtering.
-
-Frontend UI supports genre, year range, search text, with pagination controls.
-
-Frontend structure
-
-src/api/ → Axios wrappers for API calls
-
-src/pages/ → Route-level components (Movies, MovieDetail, AddMovie)
-
-src/components/ → Reusable UI parts (MovieCard, RatingStars)
-
-Protected routes (like Add Movie) check JWT token.
-
-Scalability
-
-Clear separation of concerns → easy to swap backend/frontend.
-
-DRF can scale to PostgreSQL easily.
-
-React pages can evolve into more features (user profile, ratings history).
-
-✅ Completed Features
-
-User registration & login
-
-Add / list / delete movies
-
-Rate movies (1–5 stars + review)
-
-Search & filter movies (genre, year range, text search)
-
-Pagination controls
-
-Movie details page with ratings
-
-🔜 Roadmap
-
-User ratings page (/users/:id/ratings)
-
-Component tests with React Testing Library
-
-CI setup (GitHub Actions)
+- Backend → `pytest`  
+- Frontend → `npm test`
