@@ -1,12 +1,8 @@
-# 🎬 Backend - Movie Ratings API
+🎬 Backend - Movie Ratings API
 
 Built with Django + Django REST Framework.
 
----
-
-## ⚙️ Setup
-
-```bash
+⚙️ Setup
 cd backend
 python -m venv venv
 source venv/bin/activate   # Windows: venv\Scripts\activate
@@ -32,6 +28,37 @@ Create .env in backend/:
 SECRET_KEY=your-django-secret-key
 DEBUG=True
 DATABASE_URL=sqlite:///db.sqlite3
+
+💾 Persistence
+
+Default (SQLite)
+
+By default the app uses SQLite (db.sqlite3) for local development.
+
+No extra setup needed, works out of the box.
+
+Switching to PostgreSQL
+
+Install Postgres locally or use a service (e.g. Supabase, RDS).
+
+Install dependencies:
+
+pip install psycopg2-binary
+
+
+Update .env:
+
+DATABASE_URL=postgres://USER:PASSWORD@HOST:PORT/DBNAME
+
+
+Re-run migrations:
+
+python manage.py migrate
+
+
+That’s it — everything else works the same.
+
+This makes development simple with SQLite but production-ready with Postgres.
 
 📡 API Endpoints
 
@@ -64,4 +91,3 @@ User → default Django user
 Movie → title, description, genre, year, ratings_avg, ratings_count
 
 Rating → movie (FK), user (FK), stars (1–5), review, created_at
-```
