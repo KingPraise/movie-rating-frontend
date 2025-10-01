@@ -5,7 +5,8 @@ export async function login(email: string, password: string) {
     const { access_token } = response.data;
 
     // Save token to localStorage
-    localStorage.setItem("token", access_token);
+    localStorage.setItem("authTokens", JSON.stringify({ access: access_token }));
+
 
     return response.data;
 }
@@ -16,5 +17,5 @@ export async function register(username: string, email: string, password: string
 }
 
 export function logout() {
-    localStorage.removeItem("token");
+    localStorage.removeItem("authTokens");
 }
